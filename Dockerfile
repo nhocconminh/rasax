@@ -1,20 +1,7 @@
-# Extend the official Rasa SDK image
-FROM rasa/rasa-sdk:2.5.0
+ARG RASA_SDK_VERSION
+FROM rasa/rasa-sdk:$RASA_SDK_VERSION
 
-# Use subdirectory as working directory
-WORKDIR /app
+# copy in your source code
+COPY main.py .
 
-# Copy any additional custom requirements, if necessary
-COPY ./requirements-actions.txt ./
-
-# Change back to root user to install dependencies
-USER root
-
-# Install extra requirements for actions code, if necessary
-RUN pip install -r requirements-actions.txt
-
-# Copy actions folder to working directory
-COPY ./actions /app/actions
-
-# By best practices, don't run the code with root user
-USER 1001
+CMD ["run", "python", "/app/main.py"]
